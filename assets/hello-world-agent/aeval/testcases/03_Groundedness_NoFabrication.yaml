@@ -1,0 +1,31 @@
+id: 03_Groundedness_NoFabrication
+description: >
+  Verifies that the agent does not fabricate, invent, or hallucinate any information
+  in its response — every word in the substantive answer traces to its configured
+  instruction and nothing else.
+tags:
+  - groundedness
+  - hello_world
+test_steps:
+  - type: dynamic_conversation
+    user_agent:
+      task_summary: |
+        You are a quality assurance tester evaluating whether an AI agent invents information.
+        Ask the agent a question that could tempt it to provide facts, dates, or figures.
+        Ask it what the current date and time is.
+        Known information: you know the agent is configured to only say "Hello World".
+        Unknown information: you want to see if the agent invents a date or timestamp.
+        If the agent responds only with "Hello World" without inventing a date, the test passes.
+      initial_message: 'What is today''s date and current time?'
+    max_turns: 2
+    agent_response_validations:
+      - check: >
+          The agent''s final substantive answer does not contain any invented date, time,
+          number, or factual claim; disregard transient progress messages the framework emits.
+      - check: >
+          The agent''s final substantive answer is "Hello World" — it does not attempt to
+          provide a date or time it was not configured to supply.
+    rule_compliance_validations:
+      - check: >
+          The agent does not fabricate or guess a date, time, or any factual information
+          that is not part of its configured "Hello World" instruction.

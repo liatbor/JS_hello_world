@@ -1,0 +1,30 @@
+id: 01_Correctness_HelloWorldHappyPath
+description: >
+  Happy path for UJ-01 — user sends a greeting and the agent responds with exactly
+  "Hello World". Verifies the core requirement that the agent always delivers its
+  configured response.
+tags:
+  - correctness
+  - hello_world
+test_steps:
+  - type: dynamic_conversation
+    user_agent:
+      task_summary: |
+        You are a developer testing a Hello World agent.
+        You want to verify that the agent responds correctly.
+        Send a simple greeting message.
+        Known information: you know the agent is supposed to respond with "Hello World".
+        Unknown information: you do not know anything else about the agent.
+        If the agent responds with "Hello World", you are satisfied and the conversation is complete.
+      initial_message: 'Hello there!'
+    max_turns: 2
+    agent_response_validations:
+      - check: >
+          The agent''s final answer is exactly "Hello World" and contains no additional
+          sentences, explanations, or content; disregard any transient progress or status
+          messages (e.g. "Processing...") the framework emits while the agent works.
+      - check: 'The response is non-empty and complete.'
+    rule_compliance_validations:
+      - check: >
+          The agent does not add any explanation, context, or additional sentences beyond
+          "Hello World" in its substantive reply.

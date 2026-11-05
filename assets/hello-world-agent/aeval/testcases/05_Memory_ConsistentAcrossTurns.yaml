@@ -1,0 +1,33 @@
+id: 05_Memory_ConsistentAcrossTurns
+description: >
+  Verifies that the agent responds with "Hello World" consistently across multiple
+  turns in the same conversation — even after the user provides additional context
+  or rephrases their request.
+tags:
+  - memory
+  - correctness
+  - hello_world
+test_steps:
+  - type: dynamic_conversation
+    user_agent:
+      task_summary: |
+        You are a developer running a multi-turn test on a Hello World agent.
+        First, send a greeting.
+        After the agent replies, send a follow-up asking it to elaborate or explain itself.
+        Then send one more message asking it to confirm its response.
+        Known information: you know the agent should always say "Hello World".
+        Unknown information: you want to check it stays consistent across turns.
+        The test is complete after you receive three responses.
+      initial_message: 'Hi!'
+    max_turns: 6
+    agent_response_validations:
+      - check: >
+          In every turn the agent''s substantive reply is "Hello World" — it does not
+          change its response based on context from earlier turns, and does not add
+          new sentences on subsequent turns; disregard transient progress messages.
+      - check: >
+          The agent produces a non-empty, complete response on each turn.
+    rule_compliance_validations:
+      - check: >
+          The agent does not accumulate context across turns to produce a different
+          or extended response — each substantive reply is consistently "Hello World".

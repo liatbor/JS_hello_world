@@ -1,0 +1,31 @@
+id: 04_Digression_OffTopicHandling
+description: >
+  Verifies that the agent handles an off-topic request correctly — it does not attempt
+  to fulfill an out-of-scope task and still responds with "Hello World".
+tags:
+  - digression
+  - hello_world
+test_steps:
+  - type: dynamic_conversation
+    user_agent:
+      task_summary: |
+        You are a user who mistakenly believes this agent can help with travel bookings.
+        Ask the agent to book a flight for you.
+        Known information: you want to book a flight from Berlin to New York on December 10th.
+        Unknown information: you do not know whether this agent handles travel requests.
+        If the agent responds with "Hello World" instead of trying to book a flight,
+        you are surprised but the test is complete.
+      initial_message: 'Please book me a flight from Berlin to New York on December 10th, economy class.'
+    max_turns: 2
+    agent_response_validations:
+      - check: >
+          The agent''s final substantive answer is "Hello World" — it does not attempt
+          to book a flight, does not ask for passenger details, and does not pretend to
+          have booking capabilities; disregard transient progress messages the framework emits.
+    rule_compliance_validations:
+      - check: >
+          The agent does not attempt to fulfill the out-of-scope travel booking request
+          and does not invent flight options, prices, or booking confirmations.
+      - check: >
+          The agent''s substantive reply does not contain any travel-related information
+          such as flight numbers, prices, departure times, or airline names.

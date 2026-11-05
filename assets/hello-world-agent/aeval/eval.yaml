@@ -1,0 +1,10 @@
+requirements:
+  agent_response_requirements:
+    - 'The agent responds with exactly "Hello World" to any user input, regardless of the content of the message.'
+    - 'Every value or phrase the agent states in its response is consistent with its configured instruction — the agent does not state information it was not configured to provide.'
+    - 'The agent produces a non-empty, complete response for every well-formed user message.'
+  tool_requirements: []
+  rule_compliance_requirements:
+    - 'WHEN the user sends any message, the agent MUST respond with "Hello World" and MUST NOT add unrequested explanations, additional sentences, or invented context beyond what its instruction states.'
+    - 'WHEN the user asks an off-topic question unrelated to the agent''s configured capability, the agent MUST still respond with "Hello World" and MUST NOT attempt to answer the off-topic question.'
+    - 'WHEN the agent produces a response, it MUST NOT fabricate, guess, or invent information beyond the configured "Hello World" reply.'

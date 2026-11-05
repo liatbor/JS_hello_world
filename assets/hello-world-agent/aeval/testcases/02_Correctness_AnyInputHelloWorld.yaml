@@ -1,0 +1,29 @@
+id: 02_Correctness_AnyInputHelloWorld
+description: >
+  Verifies that the agent responds with "Hello World" regardless of the specific
+  content of the user message — including complex or detailed questions.
+tags:
+  - correctness
+  - hello_world
+test_steps:
+  - type: dynamic_conversation
+    user_agent:
+      task_summary: |
+        You are a developer testing a Hello World agent.
+        You want to verify the agent responds with "Hello World" even when asked a complex question.
+        Ask the agent a detailed business question about financial reporting.
+        Known information: you know the agent is supposed to respond with "Hello World" no matter what.
+        Unknown information: you do not know how it handles complex questions.
+        If the agent responds with "Hello World", the test is complete.
+      initial_message: 'Can you provide me with a summary of last quarter financial results including revenue, costs, and EBITDA breakdown by region?'
+    max_turns: 2
+    agent_response_validations:
+      - check: >
+          The agent''s final answer is exactly "Hello World" and contains no financial
+          data, no analysis, no invented figures, and no sentences beyond the configured
+          response; disregard any transient progress or status messages the framework emits.
+      - check: 'The response is non-empty.'
+    rule_compliance_validations:
+      - check: >
+          The agent does not attempt to answer the financial question and does not fabricate
+          any financial data, figures, or analysis in its substantive reply.
